@@ -4,10 +4,10 @@ import '../models/persona_model.dart';
 import '../config.dart';
 
 class PersonaService {
-  final String endpoint = '${Config.baseUrl}/personas/';
+  final String endpoint = '${Config.baseUrl}/personas';
 
   Future<List<Persona>> obtenerPersonas() async {
-    final response = await http.get(Uri.parse(endpoint));
+    final response = await http.get(Uri.parse('$endpoint/'));
 
     if (response.statusCode == 200) {
       List<dynamic> body = json.decode(response.body);
@@ -19,7 +19,7 @@ class PersonaService {
 
   Future<Persona> crearPersona(Persona persona) async {
     final response = await http.post(
-      Uri.parse(endpoint),
+      Uri.parse('$endpoint/'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode(persona.toJson()),
     );

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../widgets/sidebar.dart';
-import '../../widgets/topbar.dart';
+import '../../main_drawer.dart'; // Asegurate de tener este archivo
 import '../../services/persona_service.dart';
 import '../../models/persona_model.dart';
 import 'persona_create/persona_create_view.dart';
@@ -31,7 +30,7 @@ class _PersonaViewState extends State<PersonaView> {
     final data = await _personaService.obtenerPersonas();
     setState(() {
       personas = data;
-      personasFiltradas = data; // Inicialmente, ambas listas son iguales
+      personasFiltradas = data;
     });
   }
 
@@ -45,7 +44,7 @@ class _PersonaViewState extends State<PersonaView> {
     final bool? confirmar = await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Confirmar eliminación'),
+        title: const Text('Confirmar eliminacion'),
         content: const Text('¿Seguro que deseas eliminar esta persona?'),
         actions: [
           TextButton(
@@ -57,7 +56,7 @@ class _PersonaViewState extends State<PersonaView> {
               await _personaService.eliminarPersona(id!);
               if (mounted) {
                 Navigator.pop(context, true);
-                _cargarPersonas(); // Recargar la lista después de eliminar
+                _cargarPersonas();
               }
             },
             child: const Text('Eliminar', style: TextStyle(color: Colors.red)),
@@ -71,23 +70,30 @@ class _PersonaViewState extends State<PersonaView> {
     }
   }
 
-  // Método para manejar el toque fuera del cuadro de búsqueda
   void _onTapOutside() {
-    FocusScope.of(context).requestFocus(FocusNode()); // Remover el foco del cuadro de búsqueda
+    FocusScope.of(context).requestFocus(FocusNode());
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: _onTapOutside, // Cuando el usuario toque fuera, desmarcamos el foco
+      onTap: _onTapOutside,
       child: Scaffold(
-        appBar: const TopBar(),
-        drawer: const SideBar(),
+        appBar: AppBar(
+          title: const Text("Personas"),
+          leading: Builder(
+            builder: (context) => IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () => Scaffold.of(context).openDrawer(),
+            ),
+          ),
+        ),
+        drawer: MainDrawer(),
         floatingActionButton: FloatingActionButton(
           onPressed: () => Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const PersonaCreateView()),
-          ).then((_) => _cargarPersonas()), // Recargar después de crear
+          ).then((_) => _cargarPersonas()),
           child: const Icon(Icons.add),
         ),
         body: Column(
@@ -133,7 +139,7 @@ class _PersonaViewState extends State<PersonaView> {
                                     MaterialPageRoute(
                                       builder: (context) => PersonaUpdateView(persona: persona),
                                     ),
-                                  ).then((_) => _cargarPersonas()), // Recargar tras actualización
+                                  ).then((_) => _cargarPersonas()),
                                 ),
                                 IconButton(
                                   icon: const Icon(Icons.delete, color: Colors.red),

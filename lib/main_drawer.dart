@@ -43,6 +43,7 @@ class MainDrawer extends StatelessWidget {
             context,
           ),
           _drawerItem(Icons.receipt, 'MIS PEDIDOS', '/pedidos', context),
+          _drawerItem(Icons.receipt, 'MIS PEDIDOS', '/personas', context),
         ],
       ),
     );
