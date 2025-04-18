@@ -4,7 +4,7 @@ import '../models/persona_model.dart';
 import '../config.dart';
 
 class PersonaService {
-  final String endpoint = '${Config.baseUrl}/personas';
+  final String endpoint = '${Config.baseUrl}/personas/';
 
   Future<List<Persona>> obtenerPersonas() async {
     final response = await http.get(Uri.parse(endpoint));
@@ -33,7 +33,7 @@ class PersonaService {
 
   Future<Persona> actualizarPersona(int id, Persona persona) async {
     final response = await http.put(
-      Uri.parse('$endpoint/$id'),
+      Uri.parse('$endpoint/$id/'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode(persona.toJson()),
     );
@@ -46,7 +46,7 @@ class PersonaService {
   }
 
   Future<void> eliminarPersona(int id) async {
-    final response = await http.delete(Uri.parse('$endpoint/$id'));
+    final response = await http.delete(Uri.parse('$endpoint/$id/'));
 
     if (response.statusCode != 204) {
       throw Exception('Error al eliminar la persona');
