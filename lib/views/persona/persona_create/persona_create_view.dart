@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import "package:flutter/material.dart";
 import '../../../models/persona_model.dart';
 import '../../../services/persona_service.dart';
 
@@ -61,9 +61,7 @@ class _PersonaCreateViewState extends State<PersonaCreateView> {
               TextFormField(
                 controller: _nombreController,
                 textCapitalization: TextCapitalization.sentences,
-                decoration: const InputDecoration(
-                  labelText: 'Nombre',
-                ),
+                decoration: const InputDecoration(labelText: 'Nombre'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Por favor ingrese el nombre';
@@ -74,9 +72,7 @@ class _PersonaCreateViewState extends State<PersonaCreateView> {
               TextFormField(
                 controller: _edadController,
                 keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  labelText: 'Edad',
-                ),
+                decoration: const InputDecoration(labelText: 'Edad'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Por favor ingrese la edad';
@@ -92,9 +88,9 @@ class _PersonaCreateViewState extends State<PersonaCreateView> {
               _isLoading
                   ? const Center(child: CircularProgressIndicator())
                   : ElevatedButton(
-                      onPressed: _crearPersona,
-                      child: const Text('Guardar'),
-                    ),
+                    onPressed: _crearPersona,
+                    child: const Text('Guardar'),
+                  ),
             ],
           ),
         ),
