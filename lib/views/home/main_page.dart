@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'main_drawer.dart';
+import '../../widgets/main_drawer.dart';
 import 'principal_content.dart';
 
 class MainPage extends StatelessWidget {

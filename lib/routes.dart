@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'main_page.dart';
+import 'views/home/main_page.dart';
 import 'views/persona/persona_view.dart';
 // importa todas las vistas que necesites
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../main_drawer.dart'; // Asegurate de tener este archivo
+import '../../widgets/main_drawer.dart'; // Asegurate de tener este archivo
 import '../../services/persona_service.dart';
 import '../../models/persona_model.dart';
 import 'persona_create/persona_create_view.dart';
