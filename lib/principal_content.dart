@@ -11,7 +11,7 @@ class PrincipalContent extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Image.asset(
-            'assets/logo_principal.png',
+            'assets/logo.jpg',
             height: 100,
           ), // cambia por tu logo
           SizedBox(height: 10),

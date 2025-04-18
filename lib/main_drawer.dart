@@ -14,7 +14,7 @@ class MainDrawer extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Image.asset('assets/logo.png', height: 50), // pon aquí tu logo
+                Image.asset('assets/logo.jpg', height: 50), // pon aquí tu logo
                 SizedBox(height: 10),
                 Text(
                   "Smart - Cart",
