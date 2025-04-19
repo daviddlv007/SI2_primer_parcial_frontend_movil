@@ -31,6 +31,9 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # Dependencia para realizar transcripción de voz a texto
+  speech_to_text: ^7.0.0 
+
   # Dependencia para realizar peticiones HTTP
   http: ^1.3.0
 
