@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:frontend_movil/views/home/catalogo/catalogo_productos_view.dart';
 import 'views/home/main_page.dart';
 import 'views/persona/persona_view.dart';
+
+import 'views/test/voice_test_view.dart';
 // importa todas las vistas que necesites
 
 final Map<String, WidgetBuilder> appRoutes = {
@@ -22,4 +24,5 @@ final Map<String, WidgetBuilder> appRoutes = {
       ),
 
   '/catalogo': (context) => const CatalogoProductosView(),
+  '/voice_test': (context) => const VoiceTestView(),
 };
