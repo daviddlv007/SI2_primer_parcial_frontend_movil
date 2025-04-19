@@ -26,8 +26,7 @@ final Map<String, WidgetBuilder> appRoutes = {
         body: Center(child: Text('Aquí van los descuentos disponibles')),
       ),
 
-  '/catalogo': (context) => const CatalogoProductosView(),
-
+  //'/catalogo': (context) => const CatalogoProductosView(),
   '/voice_test': (context) => const VoiceTestView(),
 
   //nagevacion carriro
