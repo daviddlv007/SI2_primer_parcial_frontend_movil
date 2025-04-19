@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend_movil/views/home/catalogo/catalogo_productos_view.dart';
 import 'views/home/main_page.dart';
 import 'views/persona/persona_view.dart';
 // importa todas las vistas que necesites
@@ -6,17 +7,19 @@ import 'views/persona/persona_view.dart';
 final Map<String, WidgetBuilder> appRoutes = {
   '/': (context) => MainPage(),
 
-
   '/personas': (context) => const PersonaView(),
 
-  '/mas_vendidos': (context) => Scaffold(
+  '/mas_vendidos':
+      (context) => Scaffold(
         appBar: AppBar(title: Text('Productos más vendidos')),
         body: Center(child: Text('Aquí van los productos más vendidos')),
       ),
 
-  '/descuentos': (context) => Scaffold(
+  '/descuentos':
+      (context) => Scaffold(
         appBar: AppBar(title: Text('Descuentos')),
         body: Center(child: Text('Aquí van los descuentos disponibles')),
       ),
 
+  '/catalogo': (context) => const CatalogoProductosView(),
 };

@@ -23,12 +23,15 @@ class SideBar extends StatelessWidget {
               Navigator.pushReplacementNamed(context, '/');
             },
           ),
-                    // Ruta a Personas
+          // Ruta a Personas
           ListTile(
             leading: const Icon(Icons.person),
             title: const Text('Personas'),
             onTap: () {
-              Navigator.pushReplacementNamed(context, '/persona'); // Ruta definida
+              Navigator.pushReplacementNamed(
+                context,
+                '/persona',
+              ); // Ruta definida
             },
           ),
           ExpansionTile(
@@ -50,6 +53,13 @@ class SideBar extends StatelessWidget {
                 },
               ),
             ],
+          ),
+          ListTile(
+            leading: const Icon(Icons.shopping_bag),
+            title: const Text('CATÁLOGO DE PRODUCTOS'),
+            onTap: () {
+              Navigator.pushNamed(context, '/catalogo');
+            },
           ),
         ],
       ),
