@@ -20,5 +20,5 @@ final Map<String, WidgetBuilder> appRoutes = {
         appBar: AppBar(title: Text('Descuentos')),
         body: Center(child: Text('Aquí van los descuentos disponibles')),
       ),
-  '/voice_test': (context) => const VoiceTestView(),
+  //'/voice_test': (context) => const VoiceTestView(),
 };
