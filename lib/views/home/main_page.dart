@@ -10,6 +10,7 @@ class MainPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Menú"),
+
         leading: Builder(
           builder:
               (context) => IconButton(

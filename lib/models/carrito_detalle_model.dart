@@ -19,7 +19,7 @@ class CarritoDetalle {
       carritoId: json['carrito'],
       productoId: json['producto'],
       cantidad: json['cantidad'],
-      precioUnitario: json['precio_unitario'].toDouble(),
+      precioUnitario: double.parse(json['precio_unitario'].toString()),
     );
   }
 

@@ -10,13 +10,10 @@ class PrincipalContent extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Image.asset(
-            'assets/logo.jpg',
-            height: 100,
-          ), // cambia por tu logo
+          Image.asset('assets/logo.jpg', height: 100),
           SizedBox(height: 10),
           Text(
-            'Inteligente - Carrito',
+            'SMART - CART',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
           ),
@@ -26,15 +23,12 @@ class PrincipalContent extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           SizedBox(height: 20),
-          Image.asset(
-            'assets/carrito_teclado.jpg',
-            height: 150,
-          ), // pon imagen del carrito
+          Image.asset('assets/carrito_teclado.jpg', height: 150),
           SizedBox(height: 20),
           ElevatedButton(
             onPressed: () => Navigator.pushNamed(context, '/mas_vendidos'),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue,
+              backgroundColor: const Color.fromARGB(255, 2, 6, 133),
               minimumSize: Size(double.infinity, 50),
             ),
             child: Text('Productos más vendidos'),
@@ -43,7 +37,7 @@ class PrincipalContent extends StatelessWidget {
           ElevatedButton(
             onPressed: () => Navigator.pushNamed(context, '/descuentos'),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue,
+              backgroundColor: const Color.fromARGB(255, 50, 180, 219),
               minimumSize: Size(double.infinity, 50),
             ),
             child: Text('Descuentos'),

@@ -71,7 +71,7 @@ class _CarritoViewState extends State<CarritoView> {
             const SizedBox(height: 10),
             TextField(
               controller: TextEditingController(text: _transcribedText),
-              readOnly: true, // 👈 importante: NO editable
+              readOnly: true, // NO editable
               maxLines: 3,
               decoration: InputDecoration(
                 hintText: "Aquí se transcribirá tu voz...",
@@ -93,7 +93,10 @@ class _CarritoViewState extends State<CarritoView> {
               onTap: _toggleMic,
               child: CircleAvatar(
                 radius: 30,
-                backgroundColor: _isListening ? Colors.red : Colors.blue,
+                backgroundColor:
+                    _isListening
+                        ? Colors.red
+                        : const Color.fromARGB(255, 55, 12, 247),
                 child: Icon(
                   _isListening ? Icons.mic : Icons.mic_none,
                   color: Colors.white,

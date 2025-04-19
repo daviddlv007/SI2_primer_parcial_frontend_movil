@@ -65,7 +65,7 @@ class DetalleCarritoView extends StatelessWidget {
               ),
               Container(
                 padding: const EdgeInsets.all(16),
-                color: Colors.grey[200],
+                color: const Color.fromARGB(255, 52, 52, 212),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

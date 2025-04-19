@@ -21,7 +21,7 @@ class ListaCarritosView extends StatelessWidget {
         ),
       ),
       body: FutureBuilder<List<CarritoCompra>>(
-        future: _carritoService.obtenerCarritos(), // usa tu servicio
+        future: _carritoService.obtenerCarritos(), //servicio
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -44,7 +44,7 @@ class ListaCarritosView extends StatelessWidget {
                 margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 child: ListTile(
                   title: Text("Carrito #${carrito.id}"),
-                  subtitle: Text("Fecha: ${carrito.fecha ?? 'sin fecha'}"),
+                  //subtitle: Text("Fecha: ${carrito.fecha ?? 'sin fecha'}"),
                   trailing: const Icon(Icons.arrow_forward_ios),
                   onTap: () => _abrirDetalleCarrito(context, carrito.id!),
                 ),
