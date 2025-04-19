@@ -34,7 +34,7 @@ class SideBar extends StatelessWidget {
               ); // Ruta definida
             },
           ),
-          ExpansionTile(
+          /*ExpansionTile(
             leading: const Icon(Icons.settings),
             title: const Text('Opciones'),
             children: [
@@ -53,12 +53,19 @@ class SideBar extends StatelessWidget {
                 },
               ),
             ],
-          ),
+          ),*/
           ListTile(
             leading: const Icon(Icons.shopping_bag),
             title: const Text('CATÁLOGO DE PRODUCTOS'),
             onTap: () {
               Navigator.pushNamed(context, '/catalogo');
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.shopping_cart),
+            title: const Text('CARRITO DE COMPRA'),
+            onTap: () {
+              Navigator.pushNamed(context, '/carrito');
             },
           ),
         ],

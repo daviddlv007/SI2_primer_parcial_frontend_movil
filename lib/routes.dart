@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_movil/views/home/catalogo/catalogo_productos_view.dart';
+import 'package:frontend_movil/views/carrito/carrito_view.dart';
+import 'package:frontend_movil/views/carrito/detalle_carrito_view.dart';
+import 'package:frontend_movil/views/carrito/lista_carritos_view.dart';
+import 'package:frontend_movil/views/catalogo/catalogo_productos_view.dart';
 import 'views/home/main_page.dart';
 import 'views/persona/persona_view.dart';
 
@@ -24,5 +27,11 @@ final Map<String, WidgetBuilder> appRoutes = {
       ),
 
   '/catalogo': (context) => const CatalogoProductosView(),
+
   '/voice_test': (context) => const VoiceTestView(),
+
+  //nagevacion carriro
+  '/carrito': (context) => const CarritoView(),
+  '/carritos': (context) => const ListaCarritosView(),
+  '/carrito_detalle': (context) => const DetalleCarritoView(),
 };
