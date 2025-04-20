@@ -68,6 +68,13 @@ class SideBar extends StatelessWidget {
               Navigator.pushNamed(context, '/carrito');
             },
           ),
+          /*ListTile(
+            leading: Icon(Icons.folder),
+            title: Text('CATÁLOGO DE PRODUCTOS'),
+            onTap: () {
+              Navigator.pushNamed(context, '/catalogo');
+            },
+          ),*/
         ],
       ),
     );

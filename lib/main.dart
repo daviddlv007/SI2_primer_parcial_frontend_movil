@@ -23,7 +23,7 @@ class SmartCartApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Smart Cart',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: const GlobalOverlay(), // ⬅️ sigue igual
+      home: const GlobalOverlay(),
     );
   }
 }

@@ -4,7 +4,7 @@ class Producto {
   final String? descripcion;
   final double precio;
   final int categoriaId;
-  final String? urlImagen;
+  final String urlImagen;
 
   Producto({
     this.id,
@@ -12,7 +12,7 @@ class Producto {
     this.descripcion,
     required this.precio,
     required this.categoriaId,
-    this.urlImagen,
+    required this.urlImagen,
   });
 
   factory Producto.fromJson(Map<String, dynamic> json) {
@@ -30,7 +30,8 @@ class Producto {
         descripcion: json['descripcion'],
         precio: precioConvertido,
         categoriaId: json['categoria'],
-        urlImagen: json['url_imagen'],
+        urlImagen:
+            json['url_imagen'] ?? '', //klaus hizo un cambio aqui xd ?? ´´
       );
     } catch (e) {
       print('[ERROR] Fallo en conversión: $e');
