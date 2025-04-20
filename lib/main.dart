@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'routes.dart';
+//import 'routes.dart';
 import 'providers/cart_provider.dart';
 import 'widgets/global_overlay.dart'; // ⬅️ ahora desde widgets/
 
 void main() {
   runApp(
     MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => CartProvider()),
-      ],
+      providers: [ChangeNotifierProvider(create: (_) => CartProvider())],
       child: const SmartCartApp(),
     ),
   );

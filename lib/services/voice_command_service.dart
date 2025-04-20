@@ -1,6 +1,6 @@
-import 'package:speech_to_text/speech_to_text.dart' as stt;
+//import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:flutter/material.dart';
-import '../models/producto_model.dart';
+//import '../models/producto_model.dart';
 import '../models/carrito_compra_model.dart';
 import '../models/carrito_detalle_model.dart';
 import '../services/producto_service.dart';
@@ -10,7 +10,7 @@ import '../providers/cart_provider.dart';
 import 'package:provider/provider.dart';
 
 class VoiceCommandService {
-  final stt.SpeechToText _speech = stt.SpeechToText();
+  // final stt.SpeechToText _speech = stt.SpeechToText();
 
   int _textToNumber(String text) {
     final numbers = {
