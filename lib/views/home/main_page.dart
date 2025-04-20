@@ -10,7 +10,6 @@ class MainPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Menú"),
-
         leading: Builder(
           builder:
               (context) => IconButton(
@@ -18,6 +17,24 @@ class MainPage extends StatelessWidget {
                 onPressed: () => Scaffold.of(context).openDrawer(),
               ),
         ),
+        actions: [
+          // Icono para login
+          IconButton(
+            icon: const Icon(Icons.login),
+            tooltip: 'Iniciar sesión',
+            onPressed: () {
+              Navigator.pushNamed(context, '/login');
+            },
+          ),
+          // // Icono para registro
+          // IconButton(
+          //   icon: const Icon(Icons.person_add),
+          //   tooltip: 'Registrarse',
+          //   onPressed: () {
+          //     Navigator.pushNamed(context, '/register');
+          //   },
+          // ),
+        ],
       ),
       drawer: MainDrawer(),
       body: PrincipalContent(),

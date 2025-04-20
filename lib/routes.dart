@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:frontend_movil/views/auth/login_view.dart';
+import 'package:frontend_movil/views/auth/register_view.dart';
 import 'package:frontend_movil/views/carrito/carrito_view.dart';
 import 'package:frontend_movil/views/carrito/detalle_carrito_view.dart';
 import 'package:frontend_movil/views/carrito/lista_carritos_view.dart';
@@ -28,4 +30,6 @@ final Map<String, WidgetBuilder> appRoutes = {
   '/carrito': (context) => const CarritoView(),
   '/carritos': (context) => const ListaCarritosView(),
   '/carrito_detalle': (context) => const DetalleCarritoView(),
+  '/login': (context) => const LoginView(),
+  '/register': (context) => const RegisterView(),
 };

@@ -1,4 +1,4 @@
-import 'dart:async'; // Añade esta importación
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
@@ -21,6 +21,9 @@ class _GlobalOverlayState extends State<GlobalOverlay> {
   Timer? _listeningTimer;
 
   bool _isListening = false;
+
+  // Lista de rutas donde no se mostrarán los botones flotantes
+  final List<String> _excludedRoutes = ['/login', '/register'];
 
   @override
   void dispose() {
@@ -60,7 +63,8 @@ class _GlobalOverlayState extends State<GlobalOverlay> {
             _listeningTimer?.cancel();
             _listeningTimer = Timer(const Duration(seconds: 2), _stopListening);
 
-            _voiceService.processCommand(words, _navigatorKey.currentContext!)
+            _voiceService
+                .processCommand(words, _navigatorKey.currentContext!)
                 .then((_) => _stopListening());
           }
         },
@@ -92,6 +96,19 @@ class _GlobalOverlayState extends State<GlobalOverlay> {
     }
   }
 
+  // Método para verificar si estamos en una ruta excluida
+  bool _shouldShowButtons() {
+    final NavigatorState? navigator = _navigatorKey.currentState;
+    if (navigator == null) return true;
+
+    // Obtiene la ruta actual
+    final route = ModalRoute.of(navigator.context);
+    if (route == null) return true;
+
+    // Comprueba si la ruta actual está en la lista de excluidas
+    return !_excludedRoutes.contains(route.settings.name);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -110,36 +127,46 @@ class _GlobalOverlayState extends State<GlobalOverlay> {
             return null;
           },
         ),
-        Align(
-          alignment: Alignment.bottomRight,
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Consumer<CartProvider>(
-                  builder: (context, cart, _) => FloatingActionButton(
-                    heroTag: 'cart',
-                    backgroundColor: cart.selectedCartId != null ? Colors.green : Colors.grey,
-                    onPressed: cart.selectedCartId != null
-                        ? () => _navigatorKey.currentState?.pushNamed('/cart-detail')
-                        : null,
-                    child: const Icon(Icons.shopping_cart),
+        // Solo mostrar los botones si no estamos en una ruta excluida
+        if (_shouldShowButtons())
+          Align(
+            alignment: Alignment.bottomRight,
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Consumer<CartProvider>(
+                    builder:
+                        (context, cart, _) => FloatingActionButton(
+                          heroTag: 'cart',
+                          backgroundColor:
+                              cart.selectedCartId != null
+                                  ? Colors.green
+                                  : Colors.grey,
+                          onPressed:
+                              cart.selectedCartId != null
+                                  ? () => _navigatorKey.currentState?.pushNamed(
+                                    '/cart-detail',
+                                  )
+                                  : null,
+                          child: const Icon(Icons.shopping_cart),
+                        ),
                   ),
-                ),
-                const SizedBox(width: 10),
-                FloatingActionButton(
-                  heroTag: 'mic',
-                  backgroundColor: _isListening ? Colors.red : Colors.blue,
-                  onPressed: _isListening ? _stopListening : _startListening,
-                  child: _isListening
-                      ? const Icon(Icons.mic_off)
-                      : const Icon(Icons.mic),
-                ),
-              ],
+                  const SizedBox(width: 10),
+                  FloatingActionButton(
+                    heroTag: 'mic',
+                    backgroundColor: _isListening ? Colors.red : Colors.blue,
+                    onPressed: _isListening ? _stopListening : _startListening,
+                    child:
+                        _isListening
+                            ? const Icon(Icons.mic_off)
+                            : const Icon(Icons.mic),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
       ],
     );
   }
