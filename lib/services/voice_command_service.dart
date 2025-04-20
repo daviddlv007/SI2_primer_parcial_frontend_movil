@@ -1,5 +1,7 @@
 //import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:flutter/material.dart';
+import 'package:frontend_movil/providers/carrito_provider.dart';
+import 'package:frontend_movil/providers/producto.dart';
 //import '../models/producto_model.dart';
 import '../models/carrito_compra_model.dart';
 import '../models/carrito_detalle_model.dart';
@@ -107,26 +109,66 @@ class VoiceCommandService {
     final quantity = _textToNumber(match.group(1)!.trim());
     final productName = match.group(2)!.trim();
 
-    if (provider.selectedCartId == null)
-      throw StateError('No hay carrito seleccionado');
+    // Obtener el CarritoProvider
+    final carritoProvider = Provider.of<CarritoProvider>(
+      context,
+      listen: false,
+    );
 
+    // Buscar el producto por nombre y convertir a ProductoM
     final products = await ProductoService().obtenerProductos();
+    final normalizedSearch = _normalizeText(productName);
     final product = products.firstWhere(
-      (p) => _normalizeText(p.nombre).contains(_normalizeText(productName)),
-      orElse: () => throw StateError('Producto no encontrado'),
+      (p) =>
+          _normalizeText(p.nombre) == normalizedSearch ||
+          _normalizeText(p.nombre).contains(normalizedSearch),
+      orElse: () => throw StateError('Producto "$productName" no encontrado'),
     );
 
-    await CarritoDetalleService().crearDetalle(
-      CarritoDetalle(
-        carritoId: provider.selectedCartId!,
-        productoId: product.id!,
-        cantidad: quantity,
-        precioUnitario: product.precio,
-      ),
+    // Convertir el Producto a ProductoM
+    final ProductoM productoM = ProductoM(
+      id: product.id!,
+      nombre: product.nombre,
+      descripcion: product.descripcion ?? '',
+      precio: product.precio.toString(),
+      categoria: product.categoriaId ?? 1,
     );
 
-    _showFeedback(context, '✅ ${product.nombre} (${quantity}x) agregado');
+    // Agregar el producto al carrito local
+    carritoProvider.agregarProducto(productoM, cantidad: quantity);
+
+    print(
+      '[DEBUG] Agregando producto ID: ${productoM.id} al carrito ID: ${provider.selectedCartId}',
+    );
+
+    // Si deseas sincronizar con el backend
+    if (provider.selectedCartId != null) {
+      try {
+        // Crear el detalle en la API
+        // await CarritoDetalleService().crearDetalle(
+        //   CarritoDetalle(
+        //     carritoId: provider.selectedCartId!,
+        //     productoId: productoM.id,
+        //     cantidad: quantity,
+        //     precioUnitario: double.parse(productoM.precio),
+        //   ),
+        // );
+      } catch (e) {
+        // Si falla la sincronización, mostrar advertencia pero mantener el producto en el carrito local
+        _showFeedback(
+          context,
+          '⚠️ Producto agregado localmente, pero no se pudo sincronizar',
+        );
+        print('Error al sincronizar con el servidor: $e');
+      }
+    }
+
+    _showFeedback(
+      context,
+      '✅ ${productoM.nombre} (${quantity}x) agregado al carrito',
+    );
   }
+  //----------------------------------------------------------------------------------------------------------------------
 
   Future<void> _handleRemoveProduct(
     String command,

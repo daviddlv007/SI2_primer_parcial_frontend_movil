@@ -4,7 +4,7 @@ import '../models/producto_model.dart';
 
 class ApiService {
   static const String baseUrl =
-      'http://127.0.0.1:8000'; // O IP real si estás en emulador
+      'http://192.168.100.63:8000'; // O IP real si estás en emulador
 
   static Future<List<Producto>> getProductos() async {
     final response = await http.get(Uri.parse('$baseUrl/api/productos/'));

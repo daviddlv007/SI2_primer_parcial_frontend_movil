@@ -24,6 +24,7 @@ class _GlobalOverlayState extends State<GlobalOverlay> {
 
   // Lista de rutas donde no se mostrarán los botones flotantes
   final List<String> _excludedRoutes = ['/login', '/register'];
+  String? _currentRoute;
 
   @override
   void dispose() {
@@ -49,7 +50,6 @@ class _GlobalOverlayState extends State<GlobalOverlay> {
         _isListening = true;
       });
 
-      // Configurar timer para detener la escucha después de 5 segundos de inactividad
       _listeningTimer?.cancel();
       _listeningTimer = Timer(const Duration(seconds: 5), _stopListening);
 
@@ -59,12 +59,11 @@ class _GlobalOverlayState extends State<GlobalOverlay> {
             final words = result.recognizedWords;
             print("Texto reconocido: $words");
 
-            // Reiniciar el timer cuando se detecta voz
             _listeningTimer?.cancel();
             _listeningTimer = Timer(const Duration(seconds: 2), _stopListening);
 
             _voiceService
-                .processCommand(words, _navigatorKey.currentContext!)
+                .processCommand(words, context)
                 .then((_) => _stopListening());
           }
         },
@@ -73,13 +72,6 @@ class _GlobalOverlayState extends State<GlobalOverlay> {
         pauseFor: const Duration(seconds: 2),
         cancelOnError: true,
         partialResults: true,
-        onSoundLevelChange: (level) {
-          print('Nivel de sonido: $level');
-          if (level > 0) {
-            _listeningTimer?.cancel();
-            _listeningTimer = Timer(const Duration(seconds: 2), _stopListening);
-          }
-        },
       );
     }
   }
@@ -96,17 +88,8 @@ class _GlobalOverlayState extends State<GlobalOverlay> {
     }
   }
 
-  // Método para verificar si estamos en una ruta excluida
   bool _shouldShowButtons() {
-    final NavigatorState? navigator = _navigatorKey.currentState;
-    if (navigator == null) return true;
-
-    // Obtiene la ruta actual
-    final route = ModalRoute.of(navigator.context);
-    if (route == null) return true;
-
-    // Comprueba si la ruta actual está en la lista de excluidas
-    return !_excludedRoutes.contains(route.settings.name);
+    return !_excludedRoutes.contains(_currentRoute);
   }
 
   @override
@@ -117,6 +100,15 @@ class _GlobalOverlayState extends State<GlobalOverlay> {
           key: _navigatorKey,
           initialRoute: '/',
           onGenerateRoute: (settings) {
+            // Actualizar la ruta actual
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (mounted && _currentRoute != settings.name) {
+                setState(() {
+                  _currentRoute = settings.name;
+                });
+              }
+            });
+
             final builder = appRoutes[settings.name];
             if (builder != null) {
               return MaterialPageRoute(
@@ -127,46 +119,54 @@ class _GlobalOverlayState extends State<GlobalOverlay> {
             return null;
           },
         ),
+
         // Solo mostrar los botones si no estamos en una ruta excluida
-        if (_shouldShowButtons())
-          Align(
-            alignment: Alignment.bottomRight,
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Consumer<CartProvider>(
-                    builder:
-                        (context, cart, _) => FloatingActionButton(
-                          heroTag: 'cart',
-                          backgroundColor:
-                              cart.selectedCartId != null
-                                  ? Colors.green
-                                  : Colors.grey,
-                          onPressed:
-                              cart.selectedCartId != null
-                                  ? () => _navigatorKey.currentState?.pushNamed(
-                                    '/cart-detail',
-                                  )
-                                  : null,
-                          child: const Icon(Icons.shopping_cart),
-                        ),
-                  ),
-                  const SizedBox(width: 10),
-                  FloatingActionButton(
-                    heroTag: 'mic',
-                    backgroundColor: _isListening ? Colors.red : Colors.blue,
-                    onPressed: _isListening ? _stopListening : _startListening,
-                    child:
-                        _isListening
-                            ? const Icon(Icons.mic_off)
-                            : const Icon(Icons.mic),
-                  ),
-                ],
+        Builder(
+          builder: (context) {
+            if (!_shouldShowButtons()) {
+              return const SizedBox.shrink();
+            }
+
+            return Align(
+              alignment: Alignment.bottomRight,
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Consumer<CartProvider>(
+                      builder:
+                          (context, cart, _) => FloatingActionButton(
+                            heroTag: 'cart',
+                            backgroundColor:
+                                cart.selectedCartId != null
+                                    ? Colors.green
+                                    : Colors.grey,
+                            onPressed:
+                                cart.selectedCartId != null
+                                    ? () => _navigatorKey.currentState
+                                        ?.pushNamed('/carrito_detalle')
+                                    : null,
+                            child: const Icon(Icons.shopping_cart),
+                          ),
+                    ),
+                    const SizedBox(width: 10),
+                    FloatingActionButton(
+                      heroTag: 'mic',
+                      backgroundColor: _isListening ? Colors.red : Colors.blue,
+                      onPressed:
+                          _isListening ? _stopListening : _startListening,
+                      child:
+                          _isListening
+                              ? const Icon(Icons.mic_off)
+                              : const Icon(Icons.mic),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ),
+            );
+          },
+        ),
       ],
     );
   }

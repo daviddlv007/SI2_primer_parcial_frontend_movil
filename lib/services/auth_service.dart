@@ -4,58 +4,39 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../config.dart';
 
 class AuthService {
-  final String endpoint = '${Config.baseUrl}/api/token/';
+  final String endpoint = '${Config.baseUrl}';
 
   // Clave para el almacenamiento del token en SharedPreferences
   static const String _tokenKey = 'auth_token';
   static const String _userDataKey = 'user_data';
 
-  // Método para iniciar sesión
+  // Método para iniciar sesión------------------------------------------------------------------------------------------------------------------------------------------------
   Future<Map<String, dynamic>> login(String email, String password) async {
-    final response = await http.post(
-      Uri.parse('$endpoint/login/'),
-      headers: {'Content-Type': 'application/json'},
-      body: json.encode({'email': email, 'password': password}),
-    );
+    try {
+      final response = await http.post(
+        Uri.parse('$endpoint/token/'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({'correo': email, 'password': password}),
+      );
 
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      // Guardar el token
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString(_tokenKey, data['token']);
-      if (data['user'] != null) {
-        await prefs.setString(_userDataKey, json.encode(data['user']));
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        // Guardar el token
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString(_tokenKey, data['access']);
+        if (data['user'] != null) {
+          await prefs.setString(_userDataKey, json.encode(data['user']));
+        }
+        return data;
+      } else {
+        throw Exception('Error al iniciar sesión: ${response.body}');
       }
-      return data;
-    } else {
-      throw Exception('Error al iniciar sesión: ${response.body}');
+    } catch (e) {
+      throw Exception('Error al iniciar sesión: $e');
     }
   }
 
-  // Método para registrar un nuevo usuario
-  Future<Map<String, dynamic>> register(
-    String nombre,
-    String email,
-    String password,
-  ) async {
-    final response = await http.post(
-      Uri.parse('$endpoint/register/'),
-      headers: {'Content-Type': 'application/json'},
-      body: json.encode({
-        'nombre': nombre,
-        'email': email,
-        'password': password,
-      }),
-    );
-
-    if (response.statusCode == 201) {
-      return json.decode(response.body);
-    } else {
-      throw Exception('Error al registrarse: ${response.body}');
-    }
-  }
-
-  // Método para obtener el usuario actual
+  // Método para obtener el usuario actual------------------------------------------------------------------------------------------------------------
   Future<Map<String, dynamic>?> getCurrentUser() async {
     final prefs = await SharedPreferences.getInstance();
     final userData = prefs.getString(_userDataKey);
@@ -92,7 +73,7 @@ class AuthService {
     return token != null;
   }
 
-  // Método para registrar un nuevo usuario en la API específica
+  // Método para registrar un nuevo usuario en la API específica------------------------------------------------------------------------------------------------------------
   Future<Map<String, dynamic>> registerUser({
     required String correo,
     required String nombre,
@@ -100,7 +81,7 @@ class AuthService {
     String rol = 'cliente',
   }) async {
     final response = await http.post(
-      Uri.parse('${Config.baseUrl}/api/usuarios/'),
+      Uri.parse('$endpoint/usuarios/'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode({
         'correo': correo,
