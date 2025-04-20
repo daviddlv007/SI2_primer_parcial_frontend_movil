@@ -27,10 +27,11 @@ final Map<String, WidgetBuilder> appRoutes = {
       ),
 
   //'/catalogo': (context) => const CatalogoProductosView(),
-  '/voice_test': (context) => const VoiceTestView(),
+  //'/voice_test': (context) => const VoiceTestView(),
 
   //nagevacion carriro
   '/carrito': (context) => const CarritoView(),
   '/carritos': (context) => const ListaCarritosView(),
   '/carrito_detalle': (context) => const DetalleCarritoView(),
+  //'/voice_test': (context) => const VoiceTestView(),
 };

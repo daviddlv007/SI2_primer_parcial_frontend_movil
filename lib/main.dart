@@ -1,8 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'routes.dart';
+import 'providers/cart_provider.dart';
+import 'widgets/global_overlay.dart'; // ⬅️ ahora desde widgets/
 
 void main() {
-  runApp(const SmartCartApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => CartProvider()),
+      ],
+      child: const SmartCartApp(),
+    ),
+  );
 }
 
 class SmartCartApp extends StatelessWidget {
@@ -14,8 +25,7 @@ class SmartCartApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Smart Cart',
       theme: ThemeData(primarySwatch: Colors.blue),
-      initialRoute: '/',
-      routes: appRoutes,
+      home: const GlobalOverlay(), // ⬅️ sigue igual
     );
   }
 }

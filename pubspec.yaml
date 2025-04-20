@@ -31,6 +31,8 @@ dependencies:
   flutter:
     sdk: flutter
 
+  provider: ^6.1.0
+
   # Dependencia para realizar transcripción de voz a texto
   speech_to_text: ^7.0.0 
 

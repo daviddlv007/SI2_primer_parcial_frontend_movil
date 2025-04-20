@@ -2,21 +2,14 @@ class CarritoCompra {
   final int? id;
   final int usuarioId;
   final String estado;
-  final String? fecha;
 
-  CarritoCompra({
-    this.id,
-    required this.usuarioId,
-    this.estado = 'activo',
-    required this.fecha,
-  });
+  CarritoCompra({this.id, required this.usuarioId, this.estado = 'activo'});
 
   factory CarritoCompra.fromJson(Map<String, dynamic> json) {
     return CarritoCompra(
       id: json['id'],
       usuarioId: json['usuario'],
       estado: json['estado'],
-      fecha: json['fecha'],
     );
   }
 

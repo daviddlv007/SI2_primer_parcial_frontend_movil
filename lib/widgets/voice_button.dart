@@ -1,7 +1,7 @@
-/* // lib/views/voice_test_view.dart
-import 'package:flutter/material.dart';
+/*import 'package:flutter/material.dart';
 import 'package:speech_to_text/speech_to_text.dart';
-import '../../services/voice_command_service.dart ';
+import 'package:speech_to_text/speech_recognition_result.dart';
+import '../services/voice_command_service.dart'; // IMPORTANTE
 
 class VoiceTestView extends StatefulWidget {
   const VoiceTestView({Key? key}) : super(key: key);
@@ -12,12 +12,13 @@ class VoiceTestView extends StatefulWidget {
 
 class _VoiceTestViewState extends State<VoiceTestView> {
   final SpeechToText _speech = SpeechToText();
+  final VoiceCommandService _voiceService = VoiceCommandService(); // NUEVO
+
   bool _isAvailable = false;
   bool _isListening = false;
   String _transcribedText = 'Presiona el micrófono y comienza a hablar';
   String _lastWords = '';
   String _status = 'Presiona para iniciar';
-  final VoiceCommandService _voiceService = VoiceCommandService();
 
   @override
   void initState() {
@@ -51,21 +52,9 @@ class _VoiceTestViewState extends State<VoiceTestView> {
       _status = 'Escuchando...';
     });
 
-_speech.listen(
-  onResult: (result) {
-    setState(() {
-      _lastWords = result.recognizedWords;
-      _transcribedText = _lastWords;
-      _status = result.finalResult
-          ? 'Transcripción finalizada'
-          : 'Escuchando... (parcial)';
-    });
-
-    if (result.finalResult) {
-      _voiceService.executeCommand(_lastWords, context);
-    }
-  },
-      localeId: 'es-ES', // Español general
+    _speech.listen(
+      onResult: _onSpeechResult,
+      localeId: 'es-ES',
       listenFor: const Duration(minutes: 1),
       pauseFor: const Duration(seconds: 5),
       partialResults: true,
@@ -74,9 +63,25 @@ _speech.listen(
     );
   }
 
+  void _onSpeechResult(SpeechRecognitionResult result) {
+    setState(() {
+      _lastWords = result.recognizedWords;
+      _transcribedText = _lastWords;
+      _status = result.finalResult ? 'Transcripción finalizada' : 'Escuchando... (parcial)';
+    });
+
+    if (result.finalResult) {
+      _voiceService.executeCommand(result.recognizedWords, context).catchError((error) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(error.toString())),
+        );
+      });
+    }
+  }
+
   void _stopListening() {
     if (!_isListening) return;
-    
+
     _speech.stop();
     setState(() {
       _isListening = false;
@@ -112,7 +117,6 @@ _speech.listen(
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            // Área de visualización del texto
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
@@ -129,10 +133,7 @@ _speech.listen(
                 ),
               ),
             ),
-            
             const SizedBox(height: 20),
-            
-            // Estado del reconocimiento
             Text(
               _status,
               style: TextStyle(
@@ -140,10 +141,7 @@ _speech.listen(
                 fontSize: 16,
               ),
             ),
-            
             const SizedBox(height: 20),
-            
-            // Botón de reinicio
             if (_lastWords.isNotEmpty)
               ElevatedButton(
                 onPressed: () {
